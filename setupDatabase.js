@@ -18,7 +18,7 @@ const { DB } = require("./config");
     CREATE TABLE IF NOT EXISTS products (
       id            INT           PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
       name          VARCHAR(50)   NOT NULL,
-      price         BITINT        NOT NULL,
+      price         BIGINT        NOT NULL,
       description   VARCHAR(50)   NOT NULL,
       created       DATE          NOT NULL,
       modified      DATE          NOT NULL
@@ -33,7 +33,7 @@ const { DB } = require("./config");
       userId        INT           NOT NULL,
       created       DATE          NOT NULL,       
       modified      DATE          NOT NULL,
-      FOREIGN KEY (userId) REFERENCE users(id)
+      FOREIGN KEY (userId) REFERENCES users(id)
     );
   `;
 
