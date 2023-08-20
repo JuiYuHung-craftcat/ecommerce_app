@@ -1,3 +1,6 @@
+# Server environment
+.env
+
 # dependencies
 node_modules/
 
