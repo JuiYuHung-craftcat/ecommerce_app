@@ -1,16 +1,31 @@
 const db = require("../db");
+const moment = require("moment");
+const bcrypt = require("bcrypt");
 const pgp = require("pg-promise")({ capSQL: true });
 
 module.exports = class UserModel {
+  constructor(data = {}) {
+    this.email = data.email;
+    this.firstName = data.firstName;
+    this.lastName = data.lastName;
+    this.password = data.password;
+    this.created = data.created || moment.utc().toISOString();
+    this.modified = moment.utc().toISOString();
+  }
+
   /**
    *  Create a new user record
-   *  @param  {Object}      data [User data]
    *  @return {Object|null}      [Created user record]
    */
-  async create(data) {
+  async create() {
     try {
+      // Encrypt password with saltround 10
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(this.password, salt);
+      this.password = hashedPassword;
+
       // Generate SQL statement - using helper for dynamic parameter injection
-      const statement = pgp.helpers.insert(data, null, "users") + "RETURNING *";
+      const statement = pgp.helpers.insert(this, null, "users") + "RETURNING *";
 
       // Execute SQL statement
       const result = await db.query(statement);
@@ -33,6 +48,14 @@ module.exports = class UserModel {
   async update(data) {
     try {
       const { id, ...params } = data;
+
+      // Update modified
+      params.modified = moment.utc().toISOString();
+
+      // Encrypt updated password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(params.password, salt);
+      params.password = hashedPassword;
 
       // Generate SQL statement - using helper for dynamic parameter injection
       const condition = pgp.as.format("WHERE id = ${id} RETURNING *", { id });

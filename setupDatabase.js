@@ -19,7 +19,7 @@ const { DB } = require("./config");
       id            INT           PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
       name          VARCHAR(50)   NOT NULL,
       price         BIGINT        NOT NULL,
-      description   VARCHAR(50)   NOT NULL,
+      description   VARCHAR(200)  NOT NULL,
       created       DATE          NOT NULL,
       modified      DATE          NOT NULL
     );
@@ -42,10 +42,7 @@ const { DB } = require("./config");
       id            INT           PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
       created       DATE          NOT NULL,
       modified      DATE          NOT NULL,
-      quntity       INT           NOT NULL,
-      price         INT           NOT NULL,
-      name          VARCHAR(50)   NOT NULL,
-      description   VARCHAR(200)  NOT NULL,
+      quantity       INT           NOT NULL,
       orderId       INT           NOT NULL,
       productId     INT           NOT NULL,
       FOREIGN KEY (orderId) REFERENCES orders(id),
