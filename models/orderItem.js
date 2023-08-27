@@ -42,7 +42,7 @@ module.exports = class OrderItemModel {
   static async find(orderId) {
     try {
       // Generate SQL statement
-      const statement = `SELECT orderItems.quantity, products.* 
+      const statement = `SELECT orderItems.quantity AS orderItems_quantity, products.* 
                          FROM orderItems 
                          INNER JOIN prouects ON producst.id = orderItems.productId 
                          WHERE orderId = $1`;
