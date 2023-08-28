@@ -1,4 +1,3 @@
-const { PORT } = require("../config");
 const db = require("../db");
 const pgp = require("pg-promise")({ capSQL: true });
 

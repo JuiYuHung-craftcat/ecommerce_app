@@ -9,8 +9,7 @@ const { DB } = require("./config");
       firstName     VARCHAR(50),
       lastName      VARCHAR(50),
       password      TEXT,
-      created       DATE,
-      modified      DATE
+      updatedTime   DATE
     );
   `;
 
@@ -20,8 +19,6 @@ const { DB } = require("./config");
       name          VARCHAR(50)   NOT NULL,
       price         BIGINT        NOT NULL,
       description   VARCHAR(200)  NOT NULL,
-      created       DATE          NOT NULL,
-      modified      DATE          NOT NULL
     );
   `;
 
@@ -31,8 +28,7 @@ const { DB } = require("./config");
       total         INT           NOT NULL,
       status        VARCHAR(50)   NOT NULL,
       userId        INT           NOT NULL,
-      created       DATE          NOT NULL,       
-      modified      DATE          NOT NULL,
+      updatedTime   DATE          NOT NULL,
       FOREIGN KEY (userId) REFERENCES users(id)
     );
   `;
@@ -40,8 +36,6 @@ const { DB } = require("./config");
   const orderItemsTableStatement = `
     CREATE TABLE IF NOT EXISTS orderItems (
       id            INT           PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
-      created       DATE          NOT NULL,
-      modified      DATE          NOT NULL,
       quantity       INT           NOT NULL,
       orderId       INT           NOT NULL,
       productId     INT           NOT NULL,
@@ -54,8 +48,7 @@ const { DB } = require("./config");
     CREATE TABLE IF NOT EXISTS carts (
       id            INT           PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
       userId        INT           NOT NULL,
-      created       DATE          NOT NULL,
-      modified      DATE          NOT NULL,
+      updateTime    DATE          NOT NULL,
       FOREIGN KEY (userId) REFERENCES users(id)
     );
   `;
@@ -66,8 +59,6 @@ const { DB } = require("./config");
       productId     INT           NOT NULL,
       cartId        INT           NOT NULL,
       quantity      INT           NOT NULL,
-      created       DATE          NOT NULL,
-      modified      DATE          NOT NULL,
       FOREIGN KEY (productId) REFERENCES products(id),
       FOREIGN KEY (cartId) REFERENCES carts(id)
     );

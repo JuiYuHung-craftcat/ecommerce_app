@@ -1,25 +1,17 @@
 const db = require("../db");
-const moment = require("moment");
 const pgp = require("pg-promise")({ capSQL: true });
 
 module.exports = class OrderItemModel {
-  constructor(data = {}) {
-    this.created = data.created || moment.utc().toISOString();
-    this.modified = moment.utc().toISOString();
-    this.quantity = data.quantity || 1;
-    this.orderId = data.orderId || null;
-    this.productId = data.productId;
-  }
-
   /**
    *  Create a new oder item
+   *  @param   {Object}       data    [Order item data]
    *  @return  {Object|null}          [Created order item]
    */
-  async create() {
+  static async create(data) {
     try {
       // Generate SQL statement - using helper for dynamic parameter injection
       const statement =
-        pgp.helpers.insert(this, null, "orderItems") + "RETURNING *";
+        pgp.helpers.insert(data, null, "orderItems") + "RETURNING *";
 
       //Execute SQL statement
       const result = await db.query(statement);

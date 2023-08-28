@@ -4,26 +4,17 @@ const pgp = require("pg-promise")({ capSQL: true });
 const OrderItemModel = require("./orderItem");
 
 module.exports = class OrderModel {
-  constructor(data = {}) {
-    this.total = data.total || 0;
-    this.status = data.status || "PENDING";
-    this.userId = data.userId;
-    this.created = data.created || moment.utc().toISOString();
-    this.modified = moment.utc().toISOString();
-    this.items = data.items || [];
-  }
-
-  addItems(items) {
-    this.items = items.map((item) => new OrderItemModel(item));
-  }
-
   /**
    *  Creates a new order for a user
-   *  @return {Object|null}   [Created order record]
+   *  @param  {Object}       data [Order data]
+   *  @return {Object|null}       [Created order record]
    */
-  async create() {
+  static async create(data) {
     try {
-      const { items, ...order } = this;
+      const { items, ...order } = data;
+
+      // Generate updatedTime
+      order.updatedTime = moment.utc().toISOString();
 
       // Generate SQL statement - using helper for dynamic parameter injection
       const statement =
@@ -34,12 +25,12 @@ module.exports = class OrderModel {
 
       if (result.rows?.length) {
         // Add new information generated in database (id) to Order instance
-        Object.assign(this, result.rows[0]);
+        Object.assign(data, result.rows[0]);
 
         // Create order items
-        this.items.map((element) => {
-          element.orderId = this.id;
-          element.create();
+        data.items.map((item) => {
+          item.orderId = data.id;
+          OrderItemModel.create(item);
         });
 
         return result.rows[0];
@@ -57,11 +48,14 @@ module.exports = class OrderModel {
    * @param   {Object}      data  [Order data to update]
    * @return  {Object|null}       [Updated order record]
    */
-  async update(data) {
+  static async update(data) {
     try {
+      // Generate updatedTime
+      data.updatedTime = moment.utc().toISOString();
+
       // Generaate SQL statement - using helper for dynamic parameter injection
       const condition = pgp.as.format("WHERE id = ${id} RETURNING *", {
-        id: this.id,
+        id: data.id,
       });
       const statement = pgp.helpers.update(data, null, "orders") + condition;
 

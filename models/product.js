@@ -6,7 +6,7 @@ module.exports = class ProductModel {
    * @param   {Object}  options   [Query options]
    * @return  {Array}             [Array of products]
    */
-  async find() {
+  static async find() {
     try {
       const statement = `SELECT *
                          FROM products`;
@@ -28,7 +28,7 @@ module.exports = class ProductModel {
    * @param   {Object}      id  [Product ID]
    * @return  {Object|null}     [Product record]
    */
-  async findOne(id) {
+  static async findOne(id) {
     try {
       const statement = `SELECT *
                          FROM products

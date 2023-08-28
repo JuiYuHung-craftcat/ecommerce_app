@@ -4,28 +4,23 @@ const bcrypt = require("bcrypt");
 const pgp = require("pg-promise")({ capSQL: true });
 
 module.exports = class UserModel {
-  constructor(data = {}) {
-    this.email = data.email;
-    this.firstName = data.firstName;
-    this.lastName = data.lastName;
-    this.password = data.password;
-    this.created = data.created || moment.utc().toISOString();
-    this.modified = moment.utc().toISOString();
-  }
-
   /**
    *  Create a new user record
-   *  @return {Object|null}      [Created user record]
+   *  @param  {Object}        data [User data]
+   *  @return {Object|null}        [Created user record]
    */
-  async create() {
+  static async create(data) {
     try {
       // Encrypt password with saltround 10
       const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(this.password, salt);
-      this.password = hashedPassword;
+      const hashedPassword = await bcrypt.hash(data.password, salt);
+      data.password = hashedPassword;
+
+      // Generate updatedTime
+      data.updatedTime = moment.utc().toISOString();
 
       // Generate SQL statement - using helper for dynamic parameter injection
-      const statement = pgp.helpers.insert(this, null, "users") + "RETURNING *";
+      const statement = pgp.helpers.insert(data, null, "users") + "RETURNING *";
 
       // Execute SQL statement
       const result = await db.query(statement);
@@ -45,7 +40,7 @@ module.exports = class UserModel {
    *  @param  {Object}        data [User data]
    *  @param  {Object|null}        [Updated user record]
    */
-  async update(data) {
+  static async update(data) {
     try {
       const { id, ...params } = data;
 
@@ -56,6 +51,9 @@ module.exports = class UserModel {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(params.password, salt);
       params.password = hashedPassword;
+
+      // Generate updatedTime
+      data.updatedTime = moment.utc().toISOString();
 
       // Generate SQL statement - using helper for dynamic parameter injection
       const condition = pgp.as.format("WHERE id = ${id} RETURNING *", { id });
@@ -79,7 +77,7 @@ module.exports = class UserModel {
    *  @param  {String}        email [Email address]
    *  @return {Object|null}         [User record]
    */
-  async findOneByEmail(email) {
+  static async findOneByEmail(email) {
     try {
       // Generate SQL statement
       const statement = `SELECT *
@@ -105,7 +103,7 @@ module.exports = class UserModel {
    *  @param  {String}      id  [User ID]
    *  @return {Object|null}     [User Record]
    */
-  async findOneById(id) {
+  static async findOneById(id) {
     try {
       // Generate SQL statement
       const statement = `SELECT *
