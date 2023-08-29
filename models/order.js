@@ -28,7 +28,7 @@ module.exports = class OrderModel {
         Object.assign(data, result.rows[0]);
 
         // Create order items
-        data.items.map((item) => {
+        items.map((item) => {
           item.orderId = data.id;
           OrderItemModel.create(item);
         });
@@ -75,7 +75,7 @@ module.exports = class OrderModel {
   /**
    * Loads orders for a user
    * @param   {number}  userId  [User ID]
-   * @return  {Array}           [Order records]
+   * @return  {Promise<Array>}           [Order records]
    */
   static async findByUser(userId) {
     try {

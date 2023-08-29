@@ -4,7 +4,7 @@ module.exports = class ProductModel {
   /**
    * List products
    * @param   {Object}  options   [Query options]
-   * @return  {Array}             [Array of products]
+   * @return  {Promise<Array>}             [Array of products]
    */
   static async find() {
     try {

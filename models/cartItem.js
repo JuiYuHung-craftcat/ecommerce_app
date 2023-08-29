@@ -53,7 +53,7 @@ module.exports = class CartItemModel {
   /**
    * Retrieve cart items for a cart
    * @param   {Object}   cartId   [Cart ID]
-   * @return  {Array}             [Created cart item]
+   * @return  {Promise<Array>}             [Created cart item]
    */
   static async find(cartId) {
     try {
