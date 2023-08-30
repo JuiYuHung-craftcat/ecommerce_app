@@ -22,7 +22,7 @@ module.exports = class AuthService {
     }
   }
 
-  static async logic(data) {
+  static async login(data) {
     const { email, password } = data;
     try {
       // Check if user exists

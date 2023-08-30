@@ -2,6 +2,8 @@ const createError = require("http-errors");
 const CartModel = require("../models/cart");
 const CartItemModel = require("../models/cartItem");
 const OrderModel = require("../models/order");
+const ProductModel = require("../models/product");
+const moment = require("moment");
 
 module.exports = class CartService {
   static async create(data) {
@@ -61,5 +63,38 @@ module.exports = class CartService {
     }
   }
 
-  static async checkout(cartId, userId, paymentInfo) {}
+  static async checkout(cartId, userId) {
+    try {
+      // Load cart items
+      const cartItems = await CartItemModel.find(cartId);
+
+      // Generate total from items
+      const total = cartItems.reduce(async (total, item) => {
+        const product = await ProductModel.findOne(item.productId);
+        return (total += Number(product.price));
+      }, 0);
+
+      // Generate updatedTime
+      const updatedTime = moment.utc().toISOString();
+
+      // Create initial order
+      const order = OrderModel.create({
+        items: cartItems,
+        total: total,
+        status: "NOT PAYED",
+        userId: userId,
+        updatedTime: updatedTime,
+      });
+
+      // Stripe Payment (Optional)
+
+      // Update the order
+      order.status = "FINISHED";
+      const finishedOrder = OrderModel.update(order);
+
+      return finishedOrder;
+    } catch (err) {
+      throw createError(500, err);
+    }
+  }
 };

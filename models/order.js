@@ -29,8 +29,9 @@ module.exports = class OrderModel {
 
         // Create order items
         items.map((item) => {
-          item.orderId = data.id;
-          OrderItemModel.create(item);
+          const { cartId, ...orderItems } = item;
+          orderItems.orderId = data.id;
+          OrderItemModel.create(orderItems);
         });
 
         return result.rows[0];
