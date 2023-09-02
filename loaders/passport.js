@@ -1,5 +1,5 @@
 const passport = require("passport");
-const LocalStrategy = requie("passport-local");
+const LocalStrategy = require("passport-local");
 const AuthService = require("../services/authService");
 
 module.exports = (app) => {
