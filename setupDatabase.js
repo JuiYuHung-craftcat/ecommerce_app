@@ -18,7 +18,7 @@ const { DB } = require("./config");
       id            INT           PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
       name          VARCHAR(50)   NOT NULL,
       price         BIGINT        NOT NULL,
-      description   VARCHAR(200)  NOT NULL,
+      description   VARCHAR(200)  NOT NULL
     );
   `;
 
