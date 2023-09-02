@@ -5,7 +5,14 @@ const UserService = require("../services/UserService");
 module.exports = (app) => {
   app.use("/users", router);
 
-  router.get("/:userId", async (req, res, next) => {
+  const ensureAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.redirect("/auth");
+  };
+
+  router.get("/:userId", ensureAuthenticated, async (req, res, next) => {
     try {
       const { userId } = req.params;
       const response = await UserService.get({ id: userId });
@@ -15,7 +22,7 @@ module.exports = (app) => {
     }
   });
 
-  router.put("/:userId", async (req, res, next) => {
+  router.put("/:userId", ensureAuthenticated, async (req, res, next) => {
     try {
       const { userId } = req.params;
       const data = req.body;
