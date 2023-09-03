@@ -64,6 +64,20 @@ const { DB } = require("./config");
     );
   `;
 
+  const productsInsertStatement = `
+    INSERT INTO
+      products (name, price, description)
+    VALUES
+      ('PS4', '400', 'Game console'),
+      ('PS5', '500', 'Game console'),
+      ('Macbook pro 16', '5999', 'Laptop with M2 Max chip'),
+      ('Katana', '10000', 'Japanese weapon'),
+      ('Mug', '5', 'Normal mug'),
+      ('Movie ticket', '10', 'Pre-ordered movie ticket'),
+      ('Sim card', '5', 'Sim card for 4G'),
+      ('XboxOne', '399', 'Game console');
+  `;
+
   try {
     const db = new Client({
       user: DB.PGUSER,
@@ -82,6 +96,9 @@ const { DB } = require("./config");
     await db.query(orderItemsTableStatement);
     await db.query(cartsTableStatement);
     await db.query(cartItemsTableStatement);
+
+    // Insert data into products table
+    await db.query(productsInsertStatement);
 
     await db.end();
   } catch (err) {
