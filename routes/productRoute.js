@@ -14,7 +14,7 @@ module.exports = (app) => {
     }
   });
 
-  router.get(":/productId", async (req, res, next) => {
+  router.get("/:productId", async (req, res, next) => {
     try {
       const { productId } = req.params;
       const response = await ProductService.get(productId);
