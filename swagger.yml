@@ -12,6 +12,8 @@ paths:
     get:
       summary: Returns a list of products.
       description: Returns a list of products.
+      tags:
+        - products_endpoint
       responses:
         "200": # status code
           description: A JSON array of products
@@ -30,3 +32,32 @@ paths:
                       type: string
                     description:
                       type: string
+  /products/{productId}:
+    get:
+      summary: Returns a product by ID.
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      description: Returns a product by ID.
+      tags:
+        - products_endpoint
+      responses:
+        "200": # status code
+          description: A JSON product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  price:
+                    type: string
+                  description:
+                    type: string
