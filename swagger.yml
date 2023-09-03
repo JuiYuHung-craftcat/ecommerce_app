@@ -1,13 +1,32 @@
-swagger: "2.0"
+openapi: "3.1.0"
 
 info:
   description: "ecommerce REST API"
   version: "0.0.0"
   title: "ecommerce REST API"
 
-scheme:
-  - http
-
 host: localhost:4000
 
-basePath: "/"
+paths:
+  /products:
+    get:
+      summary: Returns a list of products.
+      description: Returns a list of products.
+      responses:
+        "200": # status code
+          description: A JSON array of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    price:
+                      type: string
+                    description:
+                      type: string
