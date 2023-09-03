@@ -1,0 +1,13 @@
+swagger: "2.0"
+
+info:
+  description: "ecommerce REST API"
+  version: "0.0.0"
+  title: "ecommerce REST API"
+
+scheme:
+  - http
+
+host: localhost:4000
+
+basePath: "/"
