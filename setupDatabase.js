@@ -6,10 +6,10 @@ const { DB } = require("./config");
     CREATE TABLE IF NOT EXISTS users (
       id            INT           PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
       email         VARCHAR(50),
-      firstName     VARCHAR(50),
-      lastName      VARCHAR(50),
+      "firstName"   VARCHAR(50),
+      "lastName"    VARCHAR(50),
       password      TEXT,
-      updatedTime   DATE
+      "updatedTime" DATE
     );
   `;
 
@@ -27,40 +27,40 @@ const { DB } = require("./config");
       id            INT           PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
       total         INT           NOT NULL,
       status        VARCHAR(50)   NOT NULL,
-      userId        INT           NOT NULL,
-      updatedTime   DATE          NOT NULL,
-      FOREIGN KEY (userId) REFERENCES users(id)
+      "userId"      INT           NOT NULL,
+      "updatedTime" DATE          NOT NULL,
+      FOREIGN KEY ("userId") REFERENCES users(id)
     );
   `;
 
   const orderItemsTableStatement = `
     CREATE TABLE IF NOT EXISTS orderItems (
       id            INT           PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
-      quantity       INT           NOT NULL,
-      orderId       INT           NOT NULL,
-      productId     INT           NOT NULL,
-      FOREIGN KEY (orderId) REFERENCES orders(id),
-      FOREIGN KEY (productId) REFERENCES products(id)
+      quantity      INT           NOT NULL,
+      "orderId"     INT           NOT NULL,
+      "productId"   INT           NOT NULL,
+      FOREIGN KEY ("orderId") REFERENCES orders(id),
+      FOREIGN KEY ("productId") REFERENCES products(id)
     );
   `;
 
   const cartsTableStatement = `
     CREATE TABLE IF NOT EXISTS carts (
       id            INT           PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
-      userId        INT           NOT NULL,
-      updateTime    DATE          NOT NULL,
-      FOREIGN KEY (userId) REFERENCES users(id)
+      "userId"      INT           NOT NULL,
+      "updateTime"  DATE          NOT NULL,
+      FOREIGN KEY ("userId") REFERENCES users(id)
     );
   `;
 
   const cartItemsTableStatement = `
     CREATE TABLE IF NOT EXISTS cartItems (
       id            INT           PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
-      productId     INT           NOT NULL,
-      cartId        INT           NOT NULL,
+      "productId"   INT           NOT NULL,
+      "cartId"      INT           NOT NULL,
       quantity      INT           NOT NULL,
-      FOREIGN KEY (productId) REFERENCES products(id),
-      FOREIGN KEY (cartId) REFERENCES carts(id)
+      FOREIGN KEY ("productId") REFERENCES products(id),
+      FOREIGN KEY ("cartId") REFERENCES carts(id)
     );
   `;
 

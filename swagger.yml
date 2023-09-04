@@ -1,11 +1,12 @@
 openapi: "3.1.0"
 
 info:
-  description: "ecommerce REST API"
-  version: "0.0.0"
   title: "ecommerce REST API"
+  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 0.0.0
 
-host: localhost:4000
+servers:
+  - url: "http://localhost:4000"
 
 paths:
   /products:
@@ -60,4 +61,45 @@ paths:
                   price:
                     type: string
                   description:
+                    type: string
+  /auth/register:
+    post:
+      summary: Register a user.
+      description: Register a user.
+      tags:
+        - authentication_endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201": # status code
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  email:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  password:
+                    type: string
+                  updatedTime:
                     type: string

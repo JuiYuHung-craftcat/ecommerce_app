@@ -10,7 +10,7 @@ module.exports = (app, passport) => {
     try {
       const data = req.body;
       const response = await AuthService.register(data);
-      res.status(200).send(response);
+      res.status(201).send(response);
     } catch (err) {
       next(err);
     }
