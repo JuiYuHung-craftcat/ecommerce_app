@@ -103,3 +103,20 @@ paths:
                     type: string
                   updatedTime:
                     type: string
+  /auth/login:
+    post:
+      summary: Login a user.
+      description: Login a user.
+      tags:
+        - authentication_endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
