@@ -35,9 +35,9 @@ module.exports = class CartItemModel {
   static async update(id, data) {
     try {
       // Generate SQL statement - using helper for dynamic parameter injection
-      const condition = pgp.as.format("WHERE id = ${id} RETURNING *", { id });
+      const condition = pgp.as.format(` WHERE id = ${id} RETURNING *`, { id });
       const statement = pgp.helpers.update(data, null, "cartItems") + condition;
-
+      console.log(statement);
       // Execute SQL statement
       const result = await db.query(statement);
 
@@ -58,10 +58,10 @@ module.exports = class CartItemModel {
   static async find(cartId) {
     try {
       // Generate SQL statement
-      const statement = `SELECT cartItems.quantity AS cartItems_quantity, cartItems.id AS cartItems_id, products.*
-                         FROM cartItems
-                         INNER JOIN products ON products.id = cartItems."productId"
-                         WHERE cartItems."cartId" = $1`;
+      const statement = `SELECT "cartItems".quantity AS cartItem_quantity, "cartItems".id AS cartItem_id, products.*
+                         FROM "cartItems"
+                         INNER JOIN products ON products.id = "cartItems"."productId"
+                         WHERE "cartItems"."cartId" = $1`;
       const values = [cartId];
 
       // Execute SQL statement
@@ -84,7 +84,7 @@ module.exports = class CartItemModel {
   static async delete(id) {
     try {
       // Generate SQL statement
-      const statement = `DELETE FROM cartItems WHERE id = $1 RETURNING *`;
+      const statement = `DELETE FROM "cartItems" WHERE id = $1 RETURNING *`;
       const values = [id];
 
       // Execute SQL statement

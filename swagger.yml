@@ -30,7 +30,7 @@ paths:
                     name:
                       type: string
                     price:
-                      type: string
+                      type: integer
                     description:
                       type: string
   /products/{productId}:
@@ -55,11 +55,11 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: string
+                    type: integer
                   name:
                     type: string
                   price:
-                    type: string
+                    type: integer
                   description:
                     type: string
   /auth/register:
@@ -92,7 +92,7 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: string
+                    type: integer
                   email:
                     type: string
                   firstName:
@@ -142,7 +142,7 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: string
+                    type: integer
                   email:
                     type: string
                   firstName:
@@ -189,7 +189,7 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: string
+                    type: integer
                   email:
                     type: string
                   firstName:
@@ -215,10 +215,10 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: string
+                    type: integer
                   userId:
-                    type: string
-                  updatedTime:
+                    type: integer
+                  createdTime:
                     type: string
     post:
       summary: Creat a cart data by user ID from cookies.
@@ -234,8 +234,113 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: string
+                    type: integer
                   userId:
+                    type: integer
+                  createdTime:
                     type: string
-                  updatedTime:
-                    type: string
+  /carts/mine/items:
+    post:
+      summary: Add a item to the user's cart
+      description: Add a item to the user's cart
+      tags:
+        - carts_endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: integer
+                cartId:
+                  type: integer
+                quantity:
+                  type: integer
+      responses:
+        "200": # status code
+          description: A JSON cart item data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  productId:
+                    type: integer
+                  cartId:
+                    type: integer
+                  quantity:
+                    type: integer
+  /carts/mine/items/{cartItemId}:
+    put:
+      summary: Update a item in the user's cart
+      description: Update a item in the user's cart
+      tags:
+        - carts_endpoint
+      parameters:
+        - in: path
+          name: cartItemId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the cart item data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: integer
+                cartId:
+                  type: integer
+                quantity:
+                  type: integer
+      responses:
+        "200": # status code
+          description: A JSON cart item data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  productId:
+                    type: integer
+                  cartId:
+                    type: integer
+                  quantity:
+                    type: integer
+    delete:
+      summary: Delete a item in the user's cart
+      description: Delete a item in the user's cart
+      tags:
+        - carts_endpoint
+      parameters:
+        - in: path
+          name: cartItemId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the cart item data
+      responses:
+        "200": # status code
+          description: A JSON cart item data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  productId:
+                    type: integer
+                  cartId:
+                    type: integer
+                  quantity:
+                    type: integer
