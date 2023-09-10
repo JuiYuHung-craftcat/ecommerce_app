@@ -68,30 +68,24 @@ module.exports = class CartService {
     try {
       // Load cart items
       const cartItems = await CartItemModel.find(cartId);
-
       // Generate total from items
-      const total = cartItems.reduce(async (total, item) => {
-        const product = await ProductModel.findOne(item.productId);
-        return (total += Number(product.price));
+      const total = cartItems.reduce((total, item) => {
+        return (total += Number(item.price));
       }, 0);
 
-      // Generate updatedTime
-      const updatedTime = moment.utc().toISOString();
-
       // Create initial order
-      const order = OrderModel.create({
+      const order = await OrderModel.create({
         items: cartItems,
         total: total,
         status: "NOT PAYED",
         userId: userId,
-        updatedTime: updatedTime,
+        updatedTime: null,
       });
-
       // Stripe Payment (Optional)
 
       // Update the order
       order.status = "FINISHED";
-      const finishedOrder = OrderModel.update(order);
+      const finishedOrder = await OrderModel.update(order);
 
       return finishedOrder;
     } catch (err) {

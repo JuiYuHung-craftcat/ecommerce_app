@@ -344,3 +344,93 @@ paths:
                     type: integer
                   quantity:
                     type: integer
+  /carts/mine/checkout:
+    post:
+      summary: Check out a cart
+      description: Check out a cart
+      tags:
+        - carts_endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cartId:
+                  type: integer
+      responses:
+        "200": # status code
+          description: A JSON order data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  total:
+                    type: integer
+                  status:
+                    type: string
+                  userId:
+                    type: integer
+                  updatedTime:
+                    type: integer
+  /orders:
+    get:
+      summary: Get the list of orders
+      description: Get the list of orders
+      tags:
+        - orders_endpoint
+      responses:
+        "200": # status code
+          description: A JSON array of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    total:
+                      type: integer
+                    status:
+                      type: string
+                    userId:
+                      type: integer
+                    updatedTime:
+                      type: string
+  /orders/{orderId}:
+    get:
+      summary: Get the order by ID
+      description: Get the order by ID
+      tags:
+        - orders_endpoint
+      parameters:
+        - in: path
+          name: orderId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the order
+      responses:
+        "200": # status code
+          description: A JSON order data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  total:
+                    type: integer
+                  status:
+                    type: string
+                  userId:
+                    type: integer
+                  updatedTime:
+                    type: string

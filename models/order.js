@@ -12,7 +12,6 @@ module.exports = class OrderModel {
   static async create(data) {
     try {
       const { items, ...order } = data;
-
       // Generate updatedTime
       order.updatedTime = moment.utc().toISOString();
 
@@ -22,7 +21,6 @@ module.exports = class OrderModel {
 
       // Execute SQL statement
       const result = await db.query(statement);
-
       if (result.rows?.length) {
         // Add new information generated in database (id) to Order instance
         Object.assign(data, result.rows[0]);
@@ -30,8 +28,11 @@ module.exports = class OrderModel {
         // Create order items
         items.map((item) => {
           const { cartId, ...orderItems } = item;
-          orderItems.orderId = data.id;
-          OrderItemModel.create(orderItems);
+          const orderItemsToBeStored = {};
+          orderItemsToBeStored.quantity = orderItems.cartitem_quantity;
+          orderItemsToBeStored.orderId = data.id;
+          orderItemsToBeStored.productId = orderItems.id;
+          OrderItemModel.create(orderItemsToBeStored);
         });
 
         return result.rows[0];
@@ -51,14 +52,16 @@ module.exports = class OrderModel {
    */
   static async update(data) {
     try {
+      const { id, ...orderData } = data;
       // Generate updatedTime
-      data.updatedTime = moment.utc().toISOString();
+      orderData.updatedTime = moment.utc().toISOString();
 
       // Generaate SQL statement - using helper for dynamic parameter injection
       const condition = pgp.as.format("WHERE id = ${id} RETURNING *", {
-        id: data.id,
+        id: id,
       });
-      const statement = pgp.helpers.update(data, null, "orders") + condition;
+      const statement =
+        pgp.helpers.update(orderData, null, "orders") + condition;
 
       // Execute SQL statement
       const result = await db.query(statement);
@@ -81,14 +84,14 @@ module.exports = class OrderModel {
   static async findByUser(userId) {
     try {
       // Generate SQL statement
-      const statement = `SELECT * FROM orders WHERE userId = $1`;
+      const statement = `SELECT * FROM orders WHERE "userId" = $1`;
       const values = [userId];
 
       // Execute SQL statement
       const result = await db.query(statement, values);
 
       if (result.rows.length) {
-        return result.rows[0];
+        return result.rows;
       }
 
       return null;
