@@ -45,15 +45,12 @@ module.exports = class UserModel {
       const { id, ...params } = data;
 
       // Update modified
-      params.modified = moment.utc().toISOString();
+      params.updatedTime = moment.utc().toISOString();
 
       // Encrypt updated password
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(params.password, salt);
       params.password = hashedPassword;
-
-      // Generate updatedTime
-      data.updatedTime = moment.utc().toISOString();
 
       // Generate SQL statement - using helper for dynamic parameter injection
       const condition = pgp.as.format("WHERE id = ${id} RETURNING *", { id });
@@ -113,7 +110,6 @@ module.exports = class UserModel {
 
       // Execute SQL statement
       const result = await db.query(statement, values);
-
       if (result.rows?.length) {
         return result.rows[0];
       }

@@ -28,6 +28,7 @@ module.exports = class UserService {
 
       // If user doesn't exist, reject
       if (!user) {
+        console.log("User Not Exists!");
         throw createError(404, "User id not found for update");
       }
 

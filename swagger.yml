@@ -36,6 +36,9 @@ paths:
   /products/{productId}:
     get:
       summary: Returns a product by ID.
+      description: Returns a product by ID.
+      tags:
+        - products_endpoint
       parameters:
         - in: path
           name: productId
@@ -43,9 +46,6 @@ paths:
             type: integer
           required: true
           description: Numeric ID of the user to get
-      description: Returns a product by ID.
-      tags:
-        - products_endpoint
       responses:
         "200": # status code
           description: A JSON product
@@ -120,3 +120,83 @@ paths:
                   type: string
                 password:
                   type: string
+  /users/{userId}:
+    get:
+      summary: Get a user data by ID.
+      description: Get a user data by ID.
+      tags:
+        - user_endpoint
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user data to get
+      responses:
+        "200": # status code
+          description: A JSON user data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  email:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  password:
+                    type: string
+                  updatedTime:
+                    type: string
+    put:
+      summary: Update a user data by ID.
+      description: Update a user data by ID.
+      tags:
+        - user_endpoint
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user data to updatedTime
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200": # status code
+          description: A JSON user data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  email:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  password:
+                    type: string
+                  updatedTime:
+                    type: string
