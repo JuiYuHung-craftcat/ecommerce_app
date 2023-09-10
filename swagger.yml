@@ -200,3 +200,42 @@ paths:
                     type: string
                   updatedTime:
                     type: string
+  /carts/mine:
+    get:
+      summary: Get a cart data by user ID from cookies.
+      description: Get a cart data by user ID from cookies.
+      tags:
+        - carts_endpoint
+      responses:
+        "200": # status code
+          description: A JSON cart data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  userId:
+                    type: string
+                  updatedTime:
+                    type: string
+    post:
+      summary: Creat a cart data by user ID from cookies.
+      description: Create a cart data by user ID from cookies.
+      tags:
+        - carts_endpoint
+      responses:
+        "200": # status code
+          description: A JSON cart data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  userId:
+                    type: string
+                  updatedTime:
+                    type: string

@@ -8,6 +8,7 @@ const moment = require("moment");
 module.exports = class CartService {
   static async create(data) {
     try {
+      data.createdTime = moment.utc().toISOString();
       const cart = await CartModel.create(data);
       return cart;
     } catch (err) {

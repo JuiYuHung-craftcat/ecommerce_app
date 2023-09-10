@@ -34,7 +34,7 @@ module.exports = class CartModel {
   static async findOneByUser(userId) {
     try {
       // Generate SQL statement
-      const statement = `SELECT * FROM carts WHERE userId = $1`;
+      const statement = `SELECT * FROM carts WHERE "userId" = $1`;
       const values = [userId];
 
       // Execute SQL statement
