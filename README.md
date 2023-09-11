@@ -13,11 +13,11 @@
 2. Install Postgre.app
 3. Setup Postgre.app and initialize database
 4. Based on example.env, create .env with your personal configuration
-5. Run the following command to install package.
+5. Run the following command to install package.\
    `npm install`
-6. Run the following command to create table and insert product information for database.
+6. Run the following command to create table and insert product information for database.\
    `npm run create-db`
-7. Run the following command to start the server.
+7. Run the following command to start the server.\
    `npm run start`
 8. Open your browser and type **localhost:${your_PORT}/docs**.
 9. There will be a swagger ui page for API document and testing.
